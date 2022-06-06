@@ -31,7 +31,6 @@ class App extends Component {
   }
 
   addEmloyer = (info) => {
-    console.log('submit');
     this.setState(({data}) => {
       const newArr = [...data, {
         ...info,
@@ -84,6 +83,17 @@ class App extends Component {
     this.setState({filter});
   }
 
+  onSalaryChange = (id, target) => {
+    this.setState(({data}) => ({
+      data: data.map(item => {
+        if (item.id === id) {
+          return {...item, [target.name]: target.value}
+        }
+        return item;
+      })
+    }))
+  }
+
   render() {
     const {data, term, filter} = this.state;
     const visibleData = this.filtersEmp(this.searchEmp(data, term), filter);
@@ -99,6 +109,7 @@ class App extends Component {
         <EmployersList 
           data={visibleData}
           onDelete={this.deleteItem}
+          onSalaryChange={this.onSalaryChange}
           onToggleProp={this.onToggleProp} />
         <EmployersAddForm
           onSubmit={this.addEmloyer}/>
